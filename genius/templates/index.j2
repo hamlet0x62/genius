@@ -1,0 +1,36 @@
+{% extends 'base.j2' %}
+{% block style %}
+ a:link {
+    color: #3377aa;
+    text-decoration: none;
+    }
+    a:visited {
+    color: #3377aa;
+}
+
+{% endblock %}
+{% block content %}
+    <el-container>
+        <el-main>
+            # for rank_type, books in book_rank_map.items()
+            <el-row style="border-bottom: 1px solid #333">
+                <h1>{{ rank_type }}</h1>
+            </el-row>
+            <el-row>
+                # for book in books
+                <el-col :span="4">
+                    <div class="thumbnail">
+                        <img src="{{ book.cover_img_url if book.cover_img_url else '' }}" alt="{{ book.name }}"
+                             width="120px" height="172px">
+                    </div>
+                    <div class="title">
+                        <a href="{{ url_for('book.book_detail', bid=book.id) }}" title="{{ book.name }}">{{ book.name }}</a>
+                    </div>
+                    <span class="author">{{ book.author }}</span>
+                </el-col>
+                # endfor
+            </el-row>
+            # endfor
+        </el-main>
+    </el-container>
+{% endblock %}

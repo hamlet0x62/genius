@@ -1,0 +1,30 @@
+{% extends './base.j2' %}
+{% block title %}
+    {{ book.name }} - 书籍详情
+{% endblock %}
+
+{% block content %}
+<el-container  direction="vertical" >
+    <el-main>
+    <el-container>
+    <el-aside width="200px">
+        <el-container>
+            <el-header style="text-align: center;font-size: 26px;" height="50px"><h1>{{ book.name }}</h1></el-header>
+            <el-main style="overflow: hidden;">
+            <img src="{{ book.detail_img_url }}" alt="{{ book.name }}" >
+            </el-main>
+        </el-container>
+    </el-aside>
+        <el-main>
+        {% set display_items=[(book.author, '作者'),
+        (book.translator, '作者'), (book.press, '出版社'),
+         (book.press_date, '出版时间'), (book.price, '定价'),
+         (book.deprecation, '折旧程度'), (book.isbn, 'ISBN')] %}
+            {% for item, item_abbr in display_items if item %}
+            <p>{{ [item_abbr, item]|join(':') }}</p>
+            {% endfor %}
+        </el-main>
+    </el-container>
+    </el-main>
+</el-container>
+{% endblock %}

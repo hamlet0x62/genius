@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Genius Books</title>
+<body>
+{% macro book_item(book, _span) %}
+    <el-col :span="{{ _span }}">
+        <div class="snapshot">
+           <a href="{{ url_for('book.book_detail', bid=book.id) }}">
+            <img src="{{ book.thumbnails[0].url}}" alt="{{ book.name }}">
+               </a>
+        </div>
+        <div class="info">
+            <div class="title"><a href="{{ url_for('book.book_detail', bid=book.id) }}">{{ book.name }}</a></div>
+            <div class="author">{{ book.author }}</div>
+        </div>
+    </el-col>
+{% endmacro %}
+
+{% macro gen_fake_books(book, row, col) %}
+    {% for ri in range(row) %}
+        <el-row type="flex" justify="center" style="margin-top: 10px">
+            {% for ci in range(col) %}
+                {{ book_item(book, 4) }}
+            {% endfor %}
+        </el-row>
+    {% endfor %}
+{% endmacro %}
+
+</body>
+</html>

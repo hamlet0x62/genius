@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang='zh'>
+<head>
+    <link rel="stylesheet" href="/static/css/theme.css">
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+    <style>
+        {% block style %}
+        {% endblock %}
+    </style>
+</head>
+<body>
+<div id="app">
+    <el-container>
+        <el-header>
+            {% block header %}
+                <el-menu mode="horizontal" @select="(key, keyPath) => document.location.replace(key)">
+                    {% for nav_tab in NAV_TABS %}
+                        # if not nav_tab.subtabs
+                        <el-menu-item index="{{ url_for('.'.join((nav_tab.bp_name, nav_tab.view_func_name))) }}">
+                                {{ nav_tab.tagname }}
+                        </el-menu-item>
+                        # else
+                        <el-submenu index="{{ nav_tab.bp_name }}">
+                            <template slot="title">{{ nav_tab.tagname }}</template>
+                            # for subtab in nav_tab.subtabs
+                            <el-menu-item index="{{url_for('.'.join((nav_tab.bp_name, subtab.view_func_name)))}}">
+                                    {{ subtab.tagname }}
+                            </el-menu-item>
+                            # endfor
+                        </el-submenu>
+                        # endif
+                    {% endfor %}
+                </el-menu>
+            {% endblock %}
+        </el-header>
+        {% block content %}
+        {% endblock %}
+        {% block footer %}
+            <el-footer style="margin-top: 20px;margin-left: 0px;">&copy;2019 Genius Book</el-footer>
+        {% endblock %}
+    </el-container>
+</div>
+</body>
+<script type="application/javascript" src="/static/js/vue.min.js"></script>
+<script src="/static/js/index.js"></script>
+
+<script type="application/javascript">
+    new Vue(
+        {
+            el: '#app',
+            data:
+                function () {
+                    return {visible: false};
+                }
+        }
+    )
+</script>
+</html>

@@ -1,0 +1,26 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+flask = "*"
+flask-sqlalchemy = "*"
+sqlalchemy = "*"
+pymysql = "*"
+flask-sqlacodegen = "*"
+flask-migrate = "*"
+attrs = "*"
+flask-login = "*"
+flask-principal = "*"
+python-magic = "*"
+libmagic = "*"
+cropresize2 = "*"
+flask-wtf = "*"
+flask-security = "*"
+flask-uploads = "*"
+
+[requires]
+python_version = "3.6"

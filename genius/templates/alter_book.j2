@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <title>Alter books</title>
+    </head>
+    <body>
+    <form action="{{ url_for('book.upload') }}" enctype="multipart/form-data" method="POST">
+        <input name="img" type="file">
+        <input name="detail_img" type="file">
+        <select name="target" >
+            # for book in books
+            <option value="{{ book.id }}" label="{{ book.name }}"></option>
+            # endfor
+        </select>
+        <input type="submit">
+    </form>
+
+    <div class="notice">
+        # for msg in get_flashed_messages()
+        <p>{{ msg|e  }}</p>
+        # endfor
+        # for book_img in uploaded_imgs:
+        <div style="display: block;clear: both;margin-top: 20px">
+        <div style="float: left;">
+        <img src="{{ book_img.url }}">
+        </div>
+        <div style="float: left;margin-left: 10px">
+        # for k, v in book_img.items():
+        <p>{{ [k, v]|  join(': ') }}</p>
+        # endfor
+        </div>
+        </div>
+        #endfor
+    </div>
+
+    </body>
+</html>
