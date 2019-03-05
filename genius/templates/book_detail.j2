@@ -1,30 +1,80 @@
 {% extends './base.j2' %}
+
+{% block style %}
+    <style>
+        .bottom-btn {
+            margin-bottom: 0px;
+            padding: 5px;
+        }
+    </style>
+{% endblock %}
+
 {% block title %}
     {{ book.name }} - 书籍详情
 {% endblock %}
 
 {% block content %}
-<el-container  direction="vertical" >
-    <el-main>
-    <el-container>
-    <el-aside width="200px">
-        <el-container>
-            <el-header style="text-align: center;font-size: 26px;" height="50px"><h1>{{ book.name }}</h1></el-header>
-            <el-main style="overflow: hidden;">
-            <img src="{{ book.detail_img_url }}" alt="{{ book.name }}" >
-            </el-main>
-        </el-container>
-    </el-aside>
+    <userbook-list-dlg
+                    :dlg-visible.sync="userbookDlgVisible"
+                    :selected-userbook.sync="selectedUserbook"
+                    request-url="{{ url_for('book_api.book_copies', book_id=book.id) }}"
+    >
+
+    </userbook-list-dlg>
+    {% set is_logined = current_user.is_authenticated %}
+    <el-container direction="vertical">
         <el-main>
-        {% set display_items=[(book.author, '作者'),
-        (book.translator, '作者'), (book.press, '出版社'),
-         (book.press_date, '出版时间'), (book.price, '定价'),
+            <el-container>
+                <el-aside width="250px">
+                    <el-card>
+                        <div slot="header" style="text-align: center;font-size: 1rem;">
+                            {{ book.name }}
+                        </div>
+                        <div style="overflow: hidden; text-align: center">
+                            <img src="{{ book.detail_img_url }}" alt="{{ book.name }}" height="250px">
+                        </div>
+                    </el-card>
+                </el-aside>
+                <el-main>
+                    {% from './home/utils.j2' import address_authors %}
+                    {% set display_items=[(address_authors(book.authors), '作者'),
+        (book.translator, '翻译者'), (book.publisher or '暂无信息', '出版社'),
+         (book.pub_date, '出版时间'), (book.price, '定价'),
          (book.deprecation, '折旧程度'), (book.isbn, 'ISBN')] %}
-            {% for item, item_abbr in display_items if item %}
-            <p>{{ [item_abbr, item]|join(':') }}</p>
-            {% endfor %}
+                    {% for item, item_abbr in display_items %}
+                        <p>{{ [item_abbr, item]|join(':') if item }}</p>
+                    {% endfor %}
+                    <div class="bottom-btn">
+                        <el-button type="success" @click="userbookDlgVisible=true">
+                            借一本
+                        </el-button>
+                        # if is_logined
+                        <request-button
+                                type="primary"
+                                icon="el-icon-star-off"
+                                :clicked="{{ 'true' if current_user.has_collected(book) else 'false' }}"
+                                clicked-msg="已添加"
+                                request-url="{{ url_for('user_api.collect', book_id=book.id) }}">
+                            添加到精灵箱
+                        </request-button>
+                        # else
+                        <el-button
+                                @click="(event) => document.location.href = '{{ url_for('home.login', n=request.url) }}'">
+                            登陆后收藏
+                        </el-button>
+                        # endif
+                    </div>
+                </el-main>
+            </el-container>
+
         </el-main>
     </el-container>
-    </el-main>
-</el-container>
+{% endblock %}
+
+{%- block vue_data -%}
+    {
+    visible: false,
+    userbookDlgVisible: true,
+    selectedUserbook: {},
+    }
 {% endblock %}

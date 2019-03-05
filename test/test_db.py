@@ -22,7 +22,7 @@ class TestDB:
     def test_lend_book(self, ctx):
         with ctx:
             jerry = User.query.first()
-            book_of_user = BooksOfUser.query.first()
+            book_of_user = BookOfUser.query.first()
 
             record = jerry.lend_book(branch=Branch.query.first(),
                                      book_copy=book_of_user)
@@ -71,7 +71,7 @@ class TestDB:
 
     @property
     def users_book(self):
-        return BooksOfUser.query.order_by(BooksOfUser.id).first()
+        return BookOfUser.query.order_by(BookOfUser.id).first()
 
     @property
     def branch(self):

@@ -1,0 +1,21 @@
+{% extends "base.j2" %}
+
+{% block content %}
+    <div class="content">
+        <form action="{{ url_for('home.login', n=request.args['n']) }}" method="POST">
+            {{ form.csrf_token() }}
+            {{ form.email.label }}
+            {{ form.email() }}
+            {{ form.password.label }}
+            {{ form.password() }}
+            <input type="submit" value="Submit">
+        </form>
+        <div class="errors">
+            # for item in (form.email, form.password):
+            # for error in item.errors
+            <p>{{ error }}</p>
+            # endfor
+            # endfor
+        </div>
+    </div>
+{% endblock content %}

@@ -1,61 +1,87 @@
 <!DOCTYPE html>
 <html lang='zh'>
 <head>
-    <link rel="stylesheet" href="/static/css/theme.css">
+    <link rel="stylesheet" href="/static/dist/index.css">
     <title>
         {% block title %}
         {% endblock %}
     </title>
-    <style>
-        {% block style %}
-        {% endblock %}
-    </style>
+    {% block style %}
+        <style>
+                a:link {
+                    color: #3377aa;
+                    text-decoration: none;
+                }
+                a:visited {
+                    color: #3377aa;
+                }
+                .author {
+                    text-align: center;
+                }
+        </style>
+    {% endblock %}
 </head>
 <body>
 <div id="app">
     <el-container>
         <el-header>
             {% block header %}
-                <el-menu mode="horizontal" @select="(key, keyPath) => document.location.replace(key)">
+                <el-menu mode="horizontal"
+                         @select="(key, keyPath) => document.location.replace(key)"
+                >
                     {% for nav_tab in NAV_TABS %}
                         # if not nav_tab.subtabs
                         <el-menu-item index="{{ url_for('.'.join((nav_tab.bp_name, nav_tab.view_func_name))) }}">
-                                {{ nav_tab.tagname }}
+                            {{ nav_tab.tagname }}
                         </el-menu-item>
                         # else
                         <el-submenu index="{{ nav_tab.bp_name }}">
                             <template slot="title">{{ nav_tab.tagname }}</template>
                             # for subtab in nav_tab.subtabs
-                            <el-menu-item index="{{url_for('.'.join((nav_tab.bp_name, subtab.view_func_name)))}}">
-                                    {{ subtab.tagname }}
+                            <el-menu-item index="{{ url_for('.'.join((nav_tab.bp_name, subtab.view_func_name))) }}">
+                                {{ subtab.tagname }}
                             </el-menu-item>
                             # endfor
                         </el-submenu>
                         # endif
                     {% endfor %}
+                    {% set view_name, view_func = ('登陆', 'home.login') if current_user.is_anonymous else ('注销', 'home.logout') %}
+                    # if current_user.is_authenticated
+                    <el-menu-item index="{{ url_for('user.space') }}" style="float: right;">
+                        {{ current_user.username }}
+                    </el-menu-item>
+                    # endif
+                    <el-menu-item index="{{ url_for(view_func) }}" style="float: right;">
+                        {{ view_name }}
+                    </el-menu-item>
                 </el-menu>
             {% endblock %}
         </el-header>
         {% block content %}
         {% endblock %}
         {% block footer %}
-            <el-footer style="margin-top: 20px;margin-left: 0px;">&copy;2019 Genius Book</el-footer>
+            <el-row style="margin-top: 20px;padding:10px;">
+                <el-col :span="8" :offset="6">
+                    <el-footer style="float: right;">&copy;2019 Genius Book</el-footer>
+                </el-col>
+            </el-row>
         {% endblock %}
     </el-container>
 </div>
 </body>
 <script type="application/javascript" src="/static/js/vue.min.js"></script>
-<script src="/static/js/index.js"></script>
+<script src="/static/dist/index.umd.min.js"></script>
 
-<script type="application/javascript">
-    new Vue(
-        {
-            el: '#app',
-            data:
-                function () {
-                    return {visible: false};
-                }
-        }
-    )
-</script>
+{% block script %}
+    <script type="application/javascript">
+        new Vue(
+            {
+                el: '#app',
+                data: function () {
+                        return {%- block vue_data %}{visible: false}{%- endblock %};
+                    }
+            }
+        )
+    </script>
+{% endblock %}
 </html>

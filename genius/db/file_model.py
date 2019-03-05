@@ -6,9 +6,13 @@ from genius.db import TimeMixin
 from genius.util import get_file_md5, get_file_path
 from werkzeug.utils import secure_filename
 from sqlalchemy.ext.declarative import declared_attr
-from genius.global_setting import file_url_fmt
-import cropresize2
+from genius.global_settings import file_url_fmt
+from genius.db.mime import JPEG
 from PIL import Image
+
+from urllib import request
+
+import cropresize2
 
 
 class FileMixin(TimeMixin):
@@ -66,6 +70,26 @@ class FileMixin(TimeMixin):
         return obj
 
 
+class UserImage(FileMixin):
+    __repr_attrs__ = FileMixin.__repr_attrs__ + ['size']
+    __refname__ = None
+
+    @declared_attr
+    def user_id(cls):
+        return db.Column(db.ForeignKey('user.id'), index=True)
+
+    @declared_attr
+    def user(cls):
+        if not cls.__refname__:
+            raise AttributeError(f"__refname__ can not be {cls.__refname__}")
+        return db.relationship('User', backref=cls.__refname__)
+
+
+class UserAvator(UserImage, db.Model):
+    __tablename__ = 'user_avator'
+    __refname__ = "avators"
+
+
 class BookImage(FileMixin):
     __repr_attrs__ = FileMixin.__repr_attrs__ + ['size']
     __refname__ = None
@@ -76,8 +100,8 @@ class BookImage(FileMixin):
 
     @declared_attr
     def book(cls):
-        refname = cls.__refname__ or cls.__name__.lower().replace('book', '')
-        return db.relationship('Book', backref=f'{refname}s')
+        refname = cls.__refname__ or cls.__name__.lower().replace('book', '') + 's'
+        return db.relationship('Book', backref=f'{refname}')
 
     @property
     def size(self):
@@ -95,12 +119,34 @@ class BookImage(FileMixin):
             result.save(self.filepath)
         return self
 
+    @classmethod
+    def retrieve_from_url(cls, url, book):
+        _, filename = url.rsplit('/', 1)
+        obj = cls(filename=filename, mime_type=JPEG)
+        obj.book_id = book.id
+        request.urlretrieve(url=url, filename=obj.filepath)
+        obj.save()
+        return obj
+
 
 class BookThumbnail(BookImage, db.Model):
     __tablename__ = "book_thumb_nails"
+    __refname__ = "thumbnails"
 
 
 class BookDetailImage(BookImage, db.Model):
     __tablename__ = "book_detail_imgs"
-    __refname__ = 'detail_img'
+    __refname__ = 'detail_imgs'
 
+
+class UserBookImage(BookImage, db.Model):
+    __tablename__ = "user_book_imgs"
+    __refname__ = 'user_book_imgs'
+
+    @declared_attr
+    def user_book_id(self):
+        return db.Column(db.ForeignKey('books_of_user.id'), index=True)
+
+    @declared_attr
+    def user_book(self):
+        return db.relationship('BookOfUser', backref='imgs')

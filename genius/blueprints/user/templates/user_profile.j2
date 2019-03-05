@@ -1,0 +1,20 @@
+{% extends 'base.j2' %}
+
+{% block content %}
+    <el-row>
+        <el-col :span="8" :offset="3" padding="10px" :xs="12">
+            <el-card shadow="hover">
+                <img src="{{ user.avator_url }}" alt="" style="display: block;">
+                <h3>
+                    {{ user.nickname }}
+                </h3>
+                <div>
+                    注册时间: {{ user.create_at.strftime('%Y-%m-%d') }}
+                </div>
+                <div>
+                    所属学校: {{ user.school.name }}
+                </div>
+            </el-card>
+        </el-col>
+    </el-row>
+{% endblock %}

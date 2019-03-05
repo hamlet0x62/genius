@@ -67,3 +67,6 @@ venv.bak/
 Pipfile.lock
 
 .idea/
+
+# Uploaded directories
+genius/static/uploads

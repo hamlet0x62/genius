@@ -1,6 +1,11 @@
 from .base import db
+
 from sqlalchemy import func
+from sqlalchemy.ext.declarative import declared_attr
+
+
 import uuid
+import enum
 
 
 class BaseMixin:
@@ -42,11 +47,25 @@ class BaseMixin:
     def __hash__(self):
         return hash(self.id)
 
-    def to_dict(self):
+    def to_dict(self, schema=None):
+        schema = schema or {}
         rv = {}
         for attr in self.__repr_attrs__:
-            rv[attr] = getattr(self, attr)
+            item = getattr(self, attr)
+            marshal_attr = schema.get(attr, None)
+            item = item if not marshal_attr else marshal_attr(item) \
+                if callable(marshal_attr) else getattr(item, marshal_attr)
+            rv[attr] = item.id if isinstance(item, BaseMixin) else item.name if isinstance(item, enum.Enum) else item
+
         return rv
+
+    def delete(self):
+        session = db.session
+        try:
+            session.delete(self)
+            session.commit()
+        except:
+            session.rollback()
 
 
 class TimeMixin(BaseMixin):
@@ -59,16 +78,26 @@ class UUIDMixin(BaseMixin):
 
     @classmethod
     def create_with_uuid(cls, **kwargs):
+        """
+        return an obj with _uuid property
+        and save it if kwargs is not empty else
+        return a transient object only with _uuid property
+        :param kwargs:
+        :return:
+        """
         session = db.session
         if "_uuid" in kwargs:
             obj = session.query(cls).get(_uuid=kwargs["_uuid"])
             if obj:
                 return obj
-            obj = cls(**kwargs)
-            session.add(obj)
-            session.commit()
+            if kwargs:
+                obj = cls(**kwargs)
+                session.add(obj)
+                session.commit()
         else:
             obj = cls(_uuid=uuid.uuid4().hex, **kwargs)
-            session.add(obj)
-            session.commit()
+            if kwargs:
+                session.add(obj)
+                session.commit()
         return obj
+

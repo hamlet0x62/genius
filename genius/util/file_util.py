@@ -1,5 +1,5 @@
 import os
-from genius.global_setting import UPLOAD_DIR
+from genius.global_settings import UPLOAD_DIR
 import hashlib
 
 

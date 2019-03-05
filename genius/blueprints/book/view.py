@@ -1,11 +1,26 @@
-from flask import request, render_template
+from flask import request, render_template, redirect, url_for, abort, jsonify, current_app
 from flask import blueprints as bp
 from flask import flash
-from genius.db.model import Book
-from genius.db.file_model import BookThumbnail, BookDetailImage
+
+from flask_login import login_required, current_user
+from flask_cors import cross_origin
+
+from genius.db import db
+from genius.db.model import Book, BookOfUser
+from genius.db.file_model import BookThumbnail, BookDetailImage, UserBookImage
+from genius.ext.login_manager import login_manager
+from genius.ext.principal import edit_userbook_permission, user_role_permission
+from genius.util.form_util import render_form
+from genius.util.view_util import gen_bp_id_rquired
+
 from functools import wraps
 
+from sqlalchemy import or_
+
+from .forms import PostBookImageForm, PostBookForm
+
 book_bp = bp.Blueprint('book', __name__, url_prefix='/b')
+book_bp_id_required = gen_bp_id_rquired(book_bp)
 
 
 def render(template: str):
@@ -15,7 +30,9 @@ def render(template: str):
             render_ctx = {}
             func(render_ctx, *args, **kws)
             return render_template(template, **render_ctx)
+
         return wrapper
+
     return outer
 
 
@@ -49,10 +66,28 @@ def upload():
 @book_bp.route('/all')
 @render('view_book.j2')
 def all_books(render_ctx: dict):
-    render_ctx.setdefault('books', Book.query.all())
+    book = Book.query.order_by(Book.create_at.desc()).first()
+    render_ctx.setdefault('books', [book])
 
 
-@book_bp.route('/detail/<int:bid>')
+@book_bp_id_required('bid')
 @render('book_detail.j2')
-def book_detail(render_dict, bid):
-    render_dict.setdefault('book', Book.query.filter(Book.id == bid).first())
+def detail(render_dict, bid):
+    render_dict.setdefault('book', Book.query.get_or_404(bid))
+
+
+@book_bp.route('/post', methods=['POST'])
+@login_required
+@cross_origin()
+def post_book():
+    photos = request.files['photos']
+    if photos:
+        photo = UserBookImage.create_from_file(photos)
+
+        return jsonify({
+            'r': 1,
+            'photoId': photo.id
+        })
+
+    abort(422)
+

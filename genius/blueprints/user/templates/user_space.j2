@@ -1,0 +1,8 @@
+{% extends 'user_base.j2' %}
+
+{% block main %}
+    <userprofile-view
+            avator-height="150"
+            request-url="{{ url_for('user_api.current_profile') }}">
+    </userprofile-view>
+{% endblock %}

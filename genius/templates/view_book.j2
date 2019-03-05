@@ -1,8 +1,28 @@
 {% extends 'base.j2' %}
-{% from 'home/index.j2' import gen_fake_books as fake_books %}
+{% from 'home/utils.j2' import gen_fake_books as fake_books %}
 {% block title %}
  All Books
 {% endblock %}
+
+{% block style %}
+    <style>
+
+
+        a img {
+            border-width: 0;
+            vertical-align: middle;
+        }
+        
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited{
+        }
+
+    </style>
+{% endblock %}
+
 {% block content %}
         {{ fake_books(books[0], 10, 5) }}
 {% endblock %}

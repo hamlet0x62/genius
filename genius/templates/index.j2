@@ -1,14 +1,6 @@
 {% extends 'base.j2' %}
-{% block style %}
- a:link {
-    color: #3377aa;
-    text-decoration: none;
-    }
-    a:visited {
-    color: #3377aa;
-}
+{% from './home/utils.j2' import address_authors %}
 
-{% endblock %}
 {% block content %}
     <el-container>
         <el-main>
@@ -16,17 +8,18 @@
             <el-row style="border-bottom: 1px solid #333">
                 <h1>{{ rank_type }}</h1>
             </el-row>
-            <el-row>
+            <el-row style="text-align: center;margin-top: 10px">
                 # for book in books
-                <el-col :span="4">
+                <el-col :span="4" :xs="20">
                     <div class="thumbnail">
-                        <img src="{{ book.cover_img_url if book.cover_img_url else '' }}" alt="{{ book.name }}"
-                             width="120px" height="172px">
+                        <img src="{{ book.cover_img_url}}" alt="{{ book.name }}"
+                             width="150px" height="172px">
                     </div>
                     <div class="title">
-                        <a href="{{ url_for('book.book_detail', bid=book.id) }}" title="{{ book.name }}">{{ book.name }}</a>
+                        <a href="{{ url_for('book.detail', bid=book.id) }}"
+                           title="{{ book.name }}">{{ book.name }}</a>
                     </div>
-                    <span class="author">{{ book.author }}</span>
+                    <span class="author">{{ address_authors(book.authors) }}</span>
                 </el-col>
                 # endfor
             </el-row>

@@ -1,0 +1,72 @@
+{% extends "base.j2" %}
+{% macro user_space_table(request_url, headers) %}
+    <userspace-table request-url="{{ request_url }} "
+                     daterange-prop="{{ daterange_prop }}"
+                     daterange-label="{{ daterange_label }}">
+        # for prop, itemLabel in headers.items():
+        # if itemLabel |attr('view_func')
+        <el-table-column label="{{ itemLabel.label }}">
+            <template slot-scope="scope">
+                <el-button
+                        type="text"
+                        v-text="scope.row.{{ prop }}.{{ itemLabel.link_name_prop }}"
+                        @click="(event) => document.location =
+                        `{{ url_for(itemLabel.view_func + '_index') }}/${scope.row.{{ prop }}.id}`">
+                </el-button>
+            </template>
+        </el-table-column>
+        # elif itemLabel | attr('content_prop')
+        <el-table-column label="{{ itemLabel.label }}">
+            <template slot-scope="scope">
+                <el-popover
+                        placement="top-start"
+                        trigger="hover"
+                        :content="scope.row.{{ prop }}"
+                >
+                    <el-button slot="reference" type="mini">{{ itemLabel.cell_label }}</el-button>
+                </el-popover>
+            </template>
+        </el-table-column>
+        # else
+        <el-table-column label="{{ itemLabel }}" prop="{{ prop }}"></el-table-column>
+        # endif
+        # endfor
+    </userspace-table>
+{% endmacro %}
+{% block content %}
+    <el-container>
+        <el-aside>
+            <el-menu mode="vertical"
+                     default-active="{{ url_for(request.endpoint) }}"
+                     @select="(key, keyPath) => document.location.href = key">
+                {% for nav_tab in ASIDE_NAVS %}
+                    {% if nav_tab.child_tabs %}
+                        <el-submenu index="{{ loop.index }}">
+                            <template slot="title">
+                                {{ nav_tab.name }}
+                            </template>
+                            {% for tab in nav_tab.child_tabs %}
+                                <el-menu-item index="{{ url_for('user.' + tab.view_func_name) }}">
+                                    {{ tab.name }}
+                                </el-menu-item>
+                            {% endfor %}
+                        </el-submenu>
+                    {% else %}
+                        <el-menu-item index="{{ url_for('user.' + nav_tab.view_func_name )}}">
+                            {{ nav_tab.name }}
+                        </el-menu-item>
+                    {% endif %}
+                {% endfor %}
+            </el-menu>
+        </el-aside>
+        <el-main>
+            {% block main %}
+                # if not devloping
+                {{ user_space_table(request_url, headers)  }}
+                # else
+                <p>开发中..</p>
+                # endif
+            {% endblock %}
+        </el-main>
+    </el-container>
+{% endblock %}

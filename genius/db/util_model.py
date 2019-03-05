@@ -1,5 +1,11 @@
 import enum
+import json
+import os
 
+from collections import namedtuple
+
+here = os.path.dirname(__file__)
+ADDRESS_DATA_PATH = os.path.join(here, 'address_data.json')
 
 class BookLendState(enum.Enum):
     WAIT = 0
@@ -34,3 +40,7 @@ class UserBookDeprecation:
     NORMAL = 70 * 100
     GOOD = 90 * 100
     PERFECT = 95 * 100
+
+
+user_address = namedtuple('AddressItem', ['label', 'common_addr', 'detail'])
+address_map = json.load(open(ADDRESS_DATA_PATH))

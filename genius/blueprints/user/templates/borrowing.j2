@@ -1,0 +1,5 @@
+{% extends 'user_base.j2' %}
+
+{% block main %}
+ {{ user_space_table(url_for('user.lending_genius', headers)) }}
+{% endblock %}
