@@ -11,3 +11,6 @@ TEMPLATES_AUTO_RELOAD = 1
 J2_LINE_STATEMENT_PREFIX = '#'
 
 SSL_ENABLED = 0
+
+# deploy host setting
+DEPLOY_HOST = 'genius.aboutsimond.me'

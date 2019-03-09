@@ -65,3 +65,7 @@ venv.bak/
 Pipfile.lock
 
 .idea/
+
+# static files
+*.png
+*.jpg
