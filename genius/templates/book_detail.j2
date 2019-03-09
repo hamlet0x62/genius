@@ -15,12 +15,20 @@
 
 {% block content %}
     <userbook-list-dlg
-                    :dlg-visible.sync="userbookDlgVisible"
-                    :selected-userbook.sync="selectedUserbook"
-                    request-url="{{ url_for('book_api.book_copies', book_id=book.id) }}"
-    >
+            v-show="visible"
+            :dlg-visible.sync="visible"
+            :selected-userbook.sync="selectedUserbook"
+            :imgs2show.sync="imgs2show"
 
+            request-url="{{ url_for('book_api.book_copies', book_id=book.id) }}"
+    >
     </userbook-list-dlg>
+    <userbook-img-dlg
+            :visible.sync="imgDlgVisible"
+            :imgUrls="imgs2show.urls"
+            :current-index="imgs2show.index"
+    >
+    </userbook-img-dlg>
     {% set is_logined = current_user.is_authenticated %}
     <el-container direction="vertical">
         <el-main>
@@ -45,7 +53,7 @@
                         <p>{{ [item_abbr, item]|join(':') if item }}</p>
                     {% endfor %}
                     <div class="bottom-btn">
-                        <el-button type="success" @click="userbookDlgVisible=true">
+                        <el-button type="success" @click="visible = true">
                             借一本
                         </el-button>
                         # if is_logined
@@ -76,5 +84,18 @@
     visible: false,
     userbookDlgVisible: true,
     selectedUserbook: {},
+    imgDlgVisible: false,
+    imgs2show: {},
     }
-{% endblock %}
+{%- endblock -%}
+
+{%-block vue_watch -%}
+    imgs2show(newVal, oldVal){
+    if(newVal.urls !== oldVal){
+    this.imgDlgVisible = true;
+    }
+    },
+    selectedUserbook(val){
+    console.log('changed');
+    },
+{%- endblock -%}

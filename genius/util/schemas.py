@@ -56,7 +56,8 @@ bookofuser_schema = {
     'book': lambda x: x.name,
     'deprecation': lambda x: u'异常' if x <= 0 else f'{x/100}',
     'user': user_profile_marshal,
-    'description': lambda x: x or u'暂无描述'
+    'description': lambda x: x or u'暂无描述',
+    'images': lambda x: x.img_urls,
 }
 
 user_schema = {

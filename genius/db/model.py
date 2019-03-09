@@ -101,7 +101,7 @@ class BookOfUser(TimeMixin, UUIDMixin, db.Model):
     __tablename__ = 'books_of_user'
     __repr_attrs__ = ['id', 'book', 'user', 'deprecation',
                       'book_state', 'description', 'avg_rate',
-                      'rate_num', ]
+                      'rate_num', 'img_urls', 'borrow_times']
     __table_args__ = (
         db.Index('AK_Identifier_1', 'book_id', 'user_id'),
     )
@@ -141,6 +141,15 @@ class BookOfUser(TimeMixin, UUIDMixin, db.Model):
     @hybrid_property
     def avg_rate(self):
         return (self.total_rate / 10) / self.rate_num if self.rate_num > 0 else None
+
+    @hybrid_property
+    def borrow_times(self):
+        return len(self.lend_records)
+
+    @property
+    def img_urls(self):
+        return [img.url for img in self.imgs]
+
 
 
 class Branch(db.Model, TimeMixin):

@@ -12,7 +12,7 @@ STATIC_FILE_HOST = 'localhost:5000/i'
 protocol = 'https' if SSL_ENABLED else 'http'
 
 file_url_fmt = lambda filename: f"{protocol}://{STATIC_FILE_HOST}/{filename}"
-NO_IMG = file_url_fmt('no_img.png')
+NO_IMG = file_url_fmt('no_img.jpeg')
 
 tab = namedtuple('Tab', ['tagname', 'bp_name', 'subtabs', 'view_func_name'])
 subtab = namedtuple('SubTab', ['tagname', 'view_func_name'])
