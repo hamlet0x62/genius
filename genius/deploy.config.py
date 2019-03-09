@@ -1,4 +1,4 @@
-DEBUG = 1
+DEBUG = 0
 SECRET_KEY = "GeNiuS"
 DB_NAME = "genius"
 DB_USER = "ondev"

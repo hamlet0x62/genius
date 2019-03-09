@@ -289,7 +289,7 @@ class User(TimeMixin, db.Model, UserMixin):
         return self.avators[0].url if self.avators else NO_IMG
 
     def lend_book(self, book_copy: BookOfUser, branch: Branch):
-        if self.lend_limit.limit_nums < self.borrowed_book_nums or book_copy in self.borrowed_records:
+        if (self.lend_limit.limit_nums < self.borrowed_book_nums) or (book_copy in list(self.borrowed_records)):
             return None
 
         return UsersLendBook.create_with_uuid(lend_user_id=self.id,
