@@ -7,7 +7,7 @@ from .config import SSL_ENABLED
 HERE = os.path.dirname(__file__)
 STATIC_FILE_DIR = os.path.join(HERE, 'static')
 UPLOAD_DIR = os.path.join(STATIC_FILE_DIR, 'uploads')
-STATIC_FILE_HOST = 'localhost:5000/i'
+STATIC_FILE_HOST = 'genius.aboutsimond.me/i'
 
 protocol = 'https' if SSL_ENABLED else 'http'
 

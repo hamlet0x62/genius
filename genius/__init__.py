@@ -119,3 +119,5 @@ def add_cli_interfaces(app):
 
 def configure_app(app: Flask):
     ...
+
+app = create_app()
