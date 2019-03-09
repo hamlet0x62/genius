@@ -239,7 +239,7 @@ class UserAddress(TimeMixin, db.Model):
     book_of_users = db.relationship('BookOfUser', backref='address')
     user = db.relationship('User', backref='address')
 
-    @property
+    @hybrid_property
     def item(self):
         """
         :return: a namedtuple
