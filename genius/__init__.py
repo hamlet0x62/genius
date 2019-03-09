@@ -23,7 +23,7 @@ def create_app(config=None):
         mode = os.environ.get("GENIUS_MODE")
         config_file = 'config.py'
         if mode == 'deploy':
-            config_file = 'deploy.config.py'
+            config_file = 'deploy_config.py'
         app.config.from_pyfile(config_file)
         jinja_config = {k[3:].lower(): v for k, v in app.config.items() if k.lower().startswith('j2_')}
         jinja_config.update(app.jinja_options)

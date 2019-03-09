@@ -24,7 +24,10 @@ flask-cors = "*"
 flask-sslify = "*"
 pyopenssl = "*"
 requests = "*"
+<<<<<<< HEAD
 pipfile = "*"
+=======
+>>>>>>> a93b0846b875e28444ca2c4d45fde4f430d40362
 gunicorn = "*"
 
 [requires]

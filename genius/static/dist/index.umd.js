@@ -3662,14 +3662,14 @@ var theme_chalk = __webpack_require__("0fae");
 var lib = __webpack_require__("9e2f");
 var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a246f88-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./packages/postbook-form/src/PostBookForm.vue?vue&type=template&id=09c68ba0&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a246f88-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./packages/postbook-form/src/PostBookForm.vue?vue&type=template&id=5bea72e5&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('el-form',{ref:"form",attrs:{"model":_vm.form,"rules":_vm.rules,"label-position":"left"}},[_c('el-form-item',{attrs:{"label":"ISBN","prop":"isbn"}},[_c('el-col',{attrs:{"span":10}},[_c('el-autocomplete',{attrs:{"placeholder":"书籍的ISBN号","fetch-suggestions":function (val, cb) { return _vm.searchBook(val, 5, cb); }},on:{"select":_vm.onSelect},scopedSlots:_vm._u([{key:"default",fn:function(ref){
 var item = ref.item;
 return [_c('img',{attrs:{"src":item.images.small.replace('\\', ''),"height":"100px"}}),_c('div',{staticClass:"title",domProps:{"textContent":_vm._s(item.title)}}),_c('span',{staticClass:"isbn",domProps:{"textContent":_vm._s(item.isbn13 || item.isbn10)}})]}}]),model:{value:(_vm.form.isbn),callback:function ($$v) {_vm.$set(_vm.form, "isbn", $$v)},expression:"form.isbn"}})],1)],1),_c('el-form-item',{attrs:{"label":"书本现状"}},[_c('el-col',{attrs:{"span":6}},[_c('el-button',{staticClass:"testBtn",domProps:{"textContent":_vm._s(_vm.deprecationRate>0? "Redo": "Do the test")},on:{"click":function($event){_vm.showTestDialog = true}}}),(_vm.deprecationRate > 0)?_c('span',{staticClass:"deprecation-box",domProps:{"textContent":_vm._s(("Points:" + _vm.deprecationRate))}}):_vm._e()],1)],1),_c('el-dialog',{attrs:{"visible":_vm.showTestDialog,"title":"评估书籍状态"},on:{"update:visible":function($event){_vm.showTestDialog=$event}}},[_c('el-form',{ref:"testForm",attrs:{"model":_vm.testForm,"label-position":"top"}},[_vm._l((_vm.testForm.questions),function(q){return _c('el-form-item',{key:q.id,attrs:{"label":q.label,"rules":[{required: true, message: '请选择一个选项', trigger: 'blur'}]}},[_c('el-select',{attrs:{"placeholder":"请选择"},model:{value:(q.ans),callback:function ($$v) {_vm.$set(q, "ans", $$v)},expression:"q.ans"}},_vm._l((q.choices),function(choice){return _c('el-option',{key:choice.id,attrs:{"label":choice.description,"value":choice.value * q.weight}})}))],1)}),_c('el-button',{on:{"click":function($event){_vm.showTestDialog=false}}},[_vm._v("提交")])],2)],1),_c('el-form-item',{attrs:{"label":"请上传书籍的最新照片","prop":"photoIds"}},[_c('el-upload',{ref:"upload",attrs:{"name":"photos","auto-upload":false,"action":_vm.uploadImgUrl,"list-type":"picture","on-remove":_vm.removePic,"on-success":_vm.onUploadSuccess}},[_c('el-button',{attrs:{"slot":"trigger"},slot:"trigger"},[_vm._v("选取照片")]),_c('el-button',{on:{"click":_vm.handleUpload}},[_vm._v("上传")]),_vm._t("csrf_token",[_vm._v("未开启CSRF保护")])],2)],1),_c('el-form-item',{attrs:{"label":"说几句","prop":"description"}},[_c('el-input',{attrs:{"type":"textarea","rows":"3","maxlength":"50"},model:{value:(_vm.form.description),callback:function ($$v) {_vm.$set(_vm.form, "description", $$v)},expression:"form.description"}})],1),_c('el-form-item',[_c('el-button',{attrs:{"type":"primary"},on:{"click":_vm.onSubmitForm}},[_vm._v("提交")])],1)],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./packages/postbook-form/src/PostBookForm.vue?vue&type=template&id=09c68ba0&
+// CONCATENATED MODULE: ./packages/postbook-form/src/PostBookForm.vue?vue&type=template&id=5bea72e5&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.replace.js
 var es6_regexp_replace = __webpack_require__("a481");
@@ -3687,6 +3687,16 @@ var client_default = /*#__PURE__*/__webpack_require__.n(client);
 // EXTERNAL MODULE: ./node_modules/superagent-jsonp/dist/superagent-jsonp.js
 var superagent_jsonp = __webpack_require__("8b58");
 var superagent_jsonp_default = /*#__PURE__*/__webpack_require__.n(superagent_jsonp);
+
+// EXTERNAL MODULE: ./node_modules/region-picker/dist/data.json
+var data = __webpack_require__("0e88");
+
+// CONCATENATED MODULE: ./src/components/utils.js
+
+
+const getPlaceNameByCode = (code) => {
+    return data[code];
+}
 
 // CONCATENATED MODULE: ./src/settings/constants.js
 const uploadImgUrl = "https://jsonplaceholder.typicode.com/posts/";
@@ -3781,6 +3791,7 @@ const uploadImgUrl = "https://jsonplaceholder.typicode.com/posts/";
 
 
 
+
 var apiUrl = "https://api.douban.com/v2/book";
 
 var _searchBook = function searchBook(keyword, count, cb) {
@@ -3835,7 +3846,7 @@ var _searchBook = function searchBook(keyword, count, cb) {
         deprecation: undefined,
         isbn: "",
         description: "",
-        addressId: null,
+        addressId: 1,
         photoIds: [],
         book: {
           name: '',
@@ -5486,9 +5497,6 @@ RegionPicker.install = function (Vue$$1) {
 };
 
 /* harmony default export */ var region_picker_es = (RegionPicker);
-
-// EXTERNAL MODULE: ./node_modules/region-picker/dist/data.json
-var data = __webpack_require__("0e88");
 
 // EXTERNAL MODULE: ./node_modules/region-picker/dist/region-picker.css
 var region_picker = __webpack_require__("d9c8");

@@ -3,11 +3,17 @@ import os
 from collections import namedtuple
 
 from .config import SSL_ENABLED
+from .deploy_config import DEPLOY_HOST
 
 HERE = os.path.dirname(__file__)
+IS_DEPLOY = os.environ.get('GENIUS_MODE') == 'deploy'
 STATIC_FILE_DIR = os.path.join(HERE, 'static')
 UPLOAD_DIR = os.path.join(STATIC_FILE_DIR, 'uploads')
+<<<<<<< HEAD
 STATIC_FILE_HOST = 'genius.aboutsimond.me/i'
+=======
+STATIC_FILE_HOST = '192.168.1.103:5000/i' if not IS_DEPLOY else DEPLOY_HOST
+>>>>>>> a93b0846b875e28444ca2c4d45fde4f430d40362
 
 protocol = 'https' if SSL_ENABLED else 'http'
 
