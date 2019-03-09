@@ -10,7 +10,6 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -56,7 +55,6 @@ celerybeat-schedule
 
 # Environments
 .env
-.venv
 env/
 venv/
 ENV/
@@ -67,6 +65,3 @@ venv.bak/
 Pipfile.lock
 
 .idea/
-
-# Uploaded directories
-genius/static/uploads
