@@ -102,9 +102,8 @@ def add_cli_interfaces(app):
         *_, item = simon.address
         user_book = jerry.post_book(b, address_id=item.id)
 
-        if user_book:
-            user_lend_book = simon.lend_book(user_book, branch)
-            simon.ensure_lending([user_lend_book])
+        user_lend_book = simon.lend_book(user_book, branch)
+        simon.ensure_lending([user_lend_book])
 
     @app.cli.command('display')
     def display_user():
