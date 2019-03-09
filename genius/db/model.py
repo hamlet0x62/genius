@@ -272,7 +272,6 @@ class User(TimeMixin, db.Model, UserMixin):
     primary_address_id = db.Column(db.Integer)
     school = db.relationship('School', primaryjoin='User.school_id == School.id', backref='users')
 
-    lend_limit = association_proxy('role', 'lend_limitation')
     address_items = association_proxy('address', 'item', creator=lambda val: UserAddress(item=val))
 
     role = db.relationship('Role', backref="users", lazy='select')
@@ -285,11 +284,15 @@ class User(TimeMixin, db.Model, UserMixin):
         return len(self.borrowed_records)
 
     @hybrid_property
+    def lend_limit(self):
+        return self.role.lend_limitation
+
+    @hybrid_property
     def avator_url(self):
         return self.avators[0].url if self.avators else NO_IMG
 
     def lend_book(self, book_copy: BookOfUser, branch: Branch):
-        if (self.lend_limit.limit_nums < self.borrowed_book_nums) or (book_copy in list(self.borrowed_records)):
+        if self.lend_limit.limit_nums < self.borrowed_book_nums or book_copy in list(self.borrowed_records):
             return None
 
         return UsersLendBook.create_with_uuid(lend_user_id=self.id,
