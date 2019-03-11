@@ -47,7 +47,7 @@
                         </el-submenu>
                         # endif
                     {% endfor %}
-                    {% set view_name, view_func = ('登陆', 'home.login') if current_user.is_anonymous else ('注销', 'home.logout') %}
+                    {% set view_name, view_func = ('登录', 'home.login') if current_user.is_anonymous else ('注销', 'home.logout') %}
                     # if current_user.is_authenticated
                     <el-menu-item index="{{ url_for('user.space') }}" style="float: right;">
                         {{ current_user.username }}
