@@ -105,7 +105,7 @@ def new_genius(form: new_genius_form):
 
     photos = UserBookImage.query.filter(or_(*[photo_id == UserBookImage.id for photo_id in form.photoIds])).all()
     if len(photos) == len(form.photoIds):
-        genius.user_book_imgs = photos
+        genius.imgs = photos
         db.session.add(genius)
         db.session.commit()
         return jsonify(genius.to_dict(schema=bookofuser_schema))

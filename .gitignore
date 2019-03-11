@@ -69,3 +69,6 @@ Pipfile.lock
 # static files
 *.png
 *.jpg
+
+# vue hot-update files
+*hot-update*
