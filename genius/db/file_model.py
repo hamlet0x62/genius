@@ -143,6 +143,8 @@ class UserBookImage(BookImage, db.Model):
     __tablename__ = "user_book_imgs"
     __refname__ = 'user_book_imgs'
 
+    __repr_attrs__ = ['id', 'user_book']
+
     @declared_attr
     def user_book_id(self):
         return db.Column(db.ForeignKey('books_of_user.id'), index=True)

@@ -9,7 +9,7 @@ HERE = os.path.dirname(__file__)
 IS_DEPLOY = os.environ.get('GENIUS_MODE') == 'deploy'
 STATIC_FILE_DIR = os.path.join(HERE, 'static')
 UPLOAD_DIR = os.path.join(STATIC_FILE_DIR, 'uploads')
-STATIC_FILE_HOST = '192.168.1.103:5000/i' if not IS_DEPLOY else DEPLOY_HOST
+STATIC_FILE_HOST = '127.0.0.1:5000/i' if not IS_DEPLOY else DEPLOY_HOST
 
 protocol = 'https' if SSL_ENABLED else 'http'
 

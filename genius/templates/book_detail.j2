@@ -24,14 +24,15 @@
     >
     </userbook-list-dlg>
     <userbook-img-dlg
-            :visible.sync="imgDlgVisible"
-            :imgUrls="imgs2show.urls"
+            v-show="imgDlgVisible"
+            :dlg-visible.sync="imgDlgVisible"
+            :img-urls="imgs2show.urls"
             :current-index="imgs2show.index"
     >
     </userbook-img-dlg>
     {% set is_logined = current_user.is_authenticated %}
-    <el-container direction="vertical">
-        <el-main>
+    <el-row type="flex" justify="center" style="padding: 20px;">
+        <el-col :span="12">
             <el-container>
                 <el-aside width="250px">
                     <el-card>
@@ -74,9 +75,18 @@
                     </div>
                 </el-main>
             </el-container>
-
-        </el-main>
-    </el-container>
+        </el-col>
+        <el-col :span="6">
+            <el-card v-if="Object.values(selectedUserbook).length">
+                <h4 slot="header" style="margin: 0px;">
+                    已选择的精灵
+                </h4>
+            <userbook-view
+                    :user-book="selectedUserbook"
+                    :imgs2show.sync="imgs2show"></userbook-view>
+            </el-card>
+        </el-col>
+    </el-row>
 {% endblock %}
 
 {%- block vue_data -%}

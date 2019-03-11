@@ -226,7 +226,7 @@ class CommonAddress(TimeMixin, db.Model):
 class UserAddress(TimeMixin, db.Model):
     __tablename__ = 'user_address'
 
-    __repr_attrs__ = ['id', 'common_addr_code', 'detail', 'label']
+    __repr_attrs__ = ['id', 'code', 'detail', 'label']
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, index=True)
     detail = db.Column(db.String(50))
@@ -234,7 +234,7 @@ class UserAddress(TimeMixin, db.Model):
     parent_id = db.Column(db.ForeignKey('user.id'))
     common_addr_id = db.Column(db.ForeignKey('common_address.id'))
 
-    common_addr_code = association_proxy('common_addr', 'code')
+    code = association_proxy('common_addr', 'code')
     common_addr = db.relationship('CommonAddress', backref='user_address_list')
     book_of_users = db.relationship('BookOfUser', backref='address')
     user = db.relationship('User', backref='address')
