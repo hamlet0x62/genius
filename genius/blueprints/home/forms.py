@@ -1,3 +1,4 @@
+from flask import current_app
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import Email, DataRequired
@@ -30,6 +31,8 @@ class LoginForm(MatchDBForm):
 
     def _match(self):
         user = User.query.filter(User.email == self.email.data).first()
+        if current_app.debug:  # return one user anyway in debug mode
+            return User.query.first()
         if user and self.password.data == user.password:
             return user
         else:

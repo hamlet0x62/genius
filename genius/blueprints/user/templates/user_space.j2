@@ -3,6 +3,7 @@
 {% block main %}
     <userprofile-view
             avator-height="150"
+            update-avator-url="{{ url_for('user_api.update_avator') }}"
             request-url="{{ url_for('user_api.current_profile') }}">
     </userprofile-view>
 {% endblock %}

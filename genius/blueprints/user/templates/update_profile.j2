@@ -1,0 +1,7 @@
+{% extends 'user_base.j2' %}
+
+{% block main %}
+    <update-user-profile-view
+    request-url="{{ url_for('user_api.current_profile') }}">
+    </update-user-profile-view>
+{% endblock %}

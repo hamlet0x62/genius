@@ -50,6 +50,11 @@ def space():
     return render_template('user_space.j2', headers=userlendbook_headers)
 
 
+@user_bp.route('/update_profile')
+def update_profile():
+    return render_template('update_profile.j2')
+
+
 @user_bp.route('/borrowing')
 @render_template_with_headers('user_base.j2', userlendbook_headers)
 @left_date_daterange

@@ -1,11 +1,11 @@
-from flask import jsonify, g, abort
+from flask import jsonify, g, request
 from flask.blueprints import Blueprint
 
 from flask_login import current_user
 
 from genius.db import db
 from genius.db.model import UsersLendBook, User, BookOfUser, Book, UserCollection
-from genius.db.file_model import UserBookImage, BookThumbnail
+from genius.db.file_model import UserBookImage, BookThumbnail, UserAvator
 from genius.util.http import api_abort
 
 from genius.util.serialize import jsonify_userlendbook, jsonify_bookofuser, jsonify_usercollection, user_logined
@@ -72,6 +72,26 @@ def current_profile():
             'data': rst.to_dict(schema=user_schema)
         }
     )
+
+
+@user_api_bp.route('/update_avator', methods=['POST'])
+def update_avator():
+    avator = request.files['avator']
+    if avator:
+        user_avator = UserAvator.create_from_file(avator)
+        current_user.avators = [user_avator]
+        current_user.save()
+        return jsonify(
+
+            { 
+                'data': {
+                    'avator_url': user_avator.url
+                }
+            }
+        )
+
+    return api_abort(400, 'Avator file required')
+
 
 
 @user_api_bp.route('/new_genius', methods=['POST'])

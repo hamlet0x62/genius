@@ -8,6 +8,10 @@ aside_no_child_tab = partial(aside_nav_tab, child_tabs=None)
 
 # user_bp's view  TODO
 tabs = [
+    aside_parent_tab('个人信息', child_tabs=[
+                    aside_no_child_tab('我的信息', 'space'),
+                    aside_no_child_tab('修改个人信息', 'update_profile')
+    ]),
     aside_parent_tab('借阅记录',
                      child_tabs=[
                          aside_no_child_tab('借阅历史', 'borrow_history'),
